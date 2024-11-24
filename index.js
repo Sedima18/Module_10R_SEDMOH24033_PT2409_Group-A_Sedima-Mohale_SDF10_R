@@ -1,24 +1,30 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js"
-import { getDatabase, ref, push, onValue, remove } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js"
+import { initializeApp } from "https://firebase.google.com/.js"
+import { getDatabase, ref,push } from "https://console.firebase.google.com/project/realtime-database-7b947/database/realtime-database-7b947-default-rtdb/data/~2F.js"
+
+
+
+console.log(add(1.1))
 
 const appSettings = {
-    databaseURL: "https://realtime-database-df319-default-rtdb.europe-west1.firebasedatabase.app/"
+    databaseURL: "https://console.firebase.google.com/project/realtime-database-7b947/database/realtime-database-7b947-default-rtdb/data/~2F"
 }
 
 const app = initializeApp(appSettings)
 const database = getDatabase(app)
 const shoppingListInDB = ref(database, "shoppingList")
 
-const inputFieldEl = document.getElementById("input-field")
-const addButtonEl = document.getElementById("add-button")
-const shoppingListEl = document.getElementById("shopping-list")
 
-addButtonEl.addEventListener("click", function() {
-    let inputValue = inputFieldEl.value
-    
-    push(shoppingListInDB, inputValue)
-    
-    clearInputFieldEl()
+
+const inputFieldEL = document.getElementById("input-field")
+const addButtonEL = document.getElementById("add-button")
+
+addButtonEL.addEventListener("click",function() {
+   let inputValue =inputFieldEL.Value
+
+   push(shoppingListInDB, inputValue)
+
+
+    console. log(`${inputValue} added to database`)
 })
 
 onValue(shoppingListInDB, function(snapshot) {
@@ -39,6 +45,13 @@ onValue(shoppingListInDB, function(snapshot) {
     }
 })
 
+function clearShoppingListEl() {
+    shoppingListEl.innerHTML = ""
+}
+
+function clearInputFieldEl() {
+    inputFieldEL.value = ""
+}
 
 function appendItemToShoppingListEl(item) {
     let itemID = item[0]
@@ -49,10 +62,8 @@ function appendItemToShoppingListEl(item) {
     newEl.textContent = itemValue
     
     newEl.addEventListener("click", function() {
-        let exactLocationOfItemInDB = ref(database, `shoppingList/${itemID}`)
+        let exactLocationOfItemInDB = ref(database,` shoppingList/${itemID}`)
         
         remove(exactLocationOfItemInDB)
     })
-    
-    shoppingListEl.append(newEl)
 }
